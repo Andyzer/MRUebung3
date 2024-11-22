@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adapted A-Frame Scene with AR Mode</title>
+    <title>Adapted A-Frame Scene</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   </head>
   <body>
@@ -11,56 +11,59 @@
       xr-mode="immersive-ar"
       embedded
       renderer="logarithmicDepthBuffer: true">
-      <!-- Plane (Ground) -->
-      <a-entity
-        id="ground"
-        geometry="primitive: plane; height: 10; width: 10"
-        rotation="-90 0 0"
-        material="side: double; color: #AF51B5">
-      </a-entity>
+      <!-- Scale Parent -->
+      <a-entity scale="0.1 0.1 0.1">
+        <!-- Plane (Ground) -->
+        <a-entity
+          id="ground"
+          geometry="primitive: plane; height: 10; width: 10"
+          rotation="-90 0 0"
+          material="side: double; color: #AF51B5">
+        </a-entity>
 
-      <!-- Cube (Textured) -->
-      <a-box
-        id="cubrick"
-        position="0 0.5 0"
-        depth="1"
-        height="1"
-        width="1">
-      </a-box>
+        <!-- Cube (Textured) -->
+        <a-box
+          id="cubrick"
+          position="0 0.5 0"
+          depth="1"
+          height="1"
+          width="1">
+        </a-box>
 
-      <!-- Sphere -->
-      <a-sphere position="1.5 1 0" radius="0.5" color="#FF5722"></a-sphere>
+        <!-- Sphere -->
+        <a-sphere position="1.5 1 0" radius="0.5" color="#FF5722"></a-sphere>
 
-      <!-- Torus -->
-      <a-torus position="-1.5 1 0" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
+        <!-- Torus -->
+        <a-torus position="-1.5 1 0" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
 
-      <!-- Duck Model -->
-      <a-entity
-        gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
-        position="0 0 -2"
-        scale="1 1 1"
-        shadow="cast: true">
+        <!-- Duck Model -->
+        <a-entity
+          gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
+          position="0 0 -2"
+          scale="1 1 1"
+          shadow="cast: true">
+        </a-entity>
       </a-entity>
 
       <!-- Sky -->
-      <a-sky id="sky" color="#87CEEB"></a-sky>
+      <a-sky id="sky" color="#87CEEB" visible="false"></a-sky>
     </a-scene>
 
     <script type="text/javascript">
-      // Hide the sky when entering AR mode
+      // Get scene and sky elements
       const scene = document.querySelector("a-scene");
       const sky = document.querySelector("#sky");
 
+      // Show the sky only in VR mode
       scene.addEventListener("enter-vr", () => {
-        if (scene.is("ar-mode")) {
-          // Hide the sky for AR mode
-          sky.setAttribute("visible", "false");
+        if (!scene.is("ar-mode")) {
+          sky.setAttribute("visible", "true");
         }
       });
 
+      // Hide the sky when exiting VR mode
       scene.addEventListener("exit-vr", () => {
-        // Show the sky again when exiting AR mode
-        sky.setAttribute("visible", "true");
+        sky.setAttribute("visible", "false");
       });
 
       // Load the texture for the box
