@@ -3,14 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adapted A-Frame Scene with Teleport</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/fernandojsg/aframe-teleport-controls@3.3.2/dist/aframe-teleport-controls.min.js"></script>
+    <title>Adapted A-Frame Scene with AR Mode</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene
+      xr-mode="immersive-ar"
+      embedded
+      renderer="logarithmicDepthBuffer: true">
       <!-- Plane (Ground) -->
       <a-entity
+        id="ground"
         geometry="primitive: plane; height: 10; width: 10"
         rotation="-90 0 0"
         material="side: double; color: #AF51B5">
@@ -40,28 +43,28 @@
       </a-entity>
 
       <!-- Sky -->
-      <a-sky color="#87CEEB"></a-sky>
-
-      <!-- Camera Rig -->
-      <a-entity id="cameraRig" position="0 0 4">
-        <!-- Camera -->
-        <a-camera>
-          <a-cursor color="yellow"></a-cursor>
-        </a-camera>
-
-        <!-- Teleport Controls -->
-        <a-entity
-          teleport-controls="cameraRig: #cameraRig; teleportOrigin: #camera;"
-          raycaster="objects: .clickable"
-          line="color: yellow; opacity: 0.75"
-          cursor="rayOrigin: mouse">
-        </a-entity>
-      </a-entity>
+      <a-sky id="sky" color="#87CEEB"></a-sky>
     </a-scene>
 
     <script type="text/javascript">
+      // Hide the sky when entering AR mode
+      const scene = document.querySelector("a-scene");
+      const sky = document.querySelector("#sky");
+
+      scene.addEventListener("enter-vr", () => {
+        if (scene.is("ar-mode")) {
+          // Hide the sky for AR mode
+          sky.setAttribute("visible", "false");
+        }
+      });
+
+      scene.addEventListener("exit-vr", () => {
+        // Show the sky again when exiting AR mode
+        sky.setAttribute("visible", "true");
+      });
+
       // Load the texture for the box
-      const texture = new THREE.TextureLoader().load('textures/brick_mat.jpg');
+      const texture = new THREE.TextureLoader().load("textures/brick_mat.jpg");
 
       // Adjust texture properties
       texture.anisotropy = 16;
@@ -72,8 +75,8 @@
       const material_tex = new THREE.MeshBasicMaterial({ map: texture });
 
       // Apply the texture material to the box
-      const box = document.querySelector('#cubrick');
-      const mesh = box.getObject3D('mesh');
+      const box = document.querySelector("#cubrick");
+      const mesh = box.getObject3D("mesh");
       mesh.material = material_tex;
     </script>
   </body>
