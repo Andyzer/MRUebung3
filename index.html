@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adapted A-Frame Scene</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Plane (Ground) -->
+      <a-entity
+        geometry="primitive: plane; height: 10; width: 10" rotation="-90 0 0"
+        material="side: double; color: #AF51B5">
+      </a-entity>
+
+      <!-- Cube (Textured) -->
+      <a-box
+        id="cubrick" position="0 0.5 0" depth="1" height="1" width="1">
+      </a-box>
+
+      <!-- Sphere -->
+      <a-sphere position="1.5 1 0" radius="0.5" color="#FF5722"></a-sphere>
+
+      <!-- Torus -->
+      <a-torus position="-1.5 1 0" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
+
+      <!-- Duck Model -->
+      <a-entity
+        gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
+        position="0 0 -2"
+        scale="1 1 1"
+        shadow="cast: true">
+      </a-entity>
+
+      <!-- Sky -->
+      <a-sky color="#87CEEB"></a-sky>
+    </a-scene>
+
+    <script type="text/javascript">
+      // Load the texture for the box
+      const texture = new THREE.TextureLoader().load(
+        'textures/brick_mat.jpg'
+      );
+
+      // Adjust texture properties
+      texture.anisotropy = 16;
+      texture.minFilter = THREE.NearestFilter;
+      texture.magFilter = THREE.NearestFilter;
+
+      // Create a material with the texture
+      const material_tex = new THREE.MeshBasicMaterial({ map: texture });
+
+      // Apply the texture material to the box
+      const box = document.querySelector('#cubrick');
+      const mesh = box.getObject3D('mesh');
+      mesh.material = material_tex;
+    </script>
+  </body>
+</html>
