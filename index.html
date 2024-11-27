@@ -15,7 +15,7 @@
 
       <!-- Objects -->
       <a-box
-        position="-1 0.5 0"
+        position="0 0.5 -2"
         rotation="0 45 0"
         material="src: ./textures/brick_mat.jpg"
         shadow="cast: true; receive: true">
@@ -23,13 +23,13 @@
 
       <a-sphere
         position="0 1.25 -5"
-        radius="1.25"
+        radius="0.75"
         color="#EF2D5E"
         shadow="cast: true; receive: true">
       </a-sphere>
 
       <a-cylinder
-        position="2 0.75 -2"
+        position="2 0.75 -4"
         radius="0.5"
         height="1.5"
         color="#FFC65D"
@@ -39,30 +39,40 @@
       <a-plane
         position="0 0 -4"
         rotation="-90 0 0"
-        width="14"
-        height="14"
+        width="7"
+        height="7"
         color="#7BC8A4"
         shadow="receive: true">
       </a-plane>
 
-      <a-torus
-        position="3 1 -5"
-        radius="0.5"
-        radius-tubular="0.1"
-        color="#3F51B5"
-        shadow="cast: true; receive: true">
-      </a-torus>
-
       <a-entity
         gltf-model="./gltf/gltf/chair.gltf"
-        position="-3 0 -5"
+        position="-2 0 -5"
         scale="0.02 0.02 0.02"
         shadow="cast: true; receive: true">
       </a-entity>
 
-      <!-- Sky -->
-      <a-sky hide-on-enter-ar color="skyblue" ></a-sky>
+      <a-sky id="vr-sky" color="skyblue" visible="false"></a-sky>
 
     </a-scene>
+
+    <script>
+      // Control sky visibility based on AR or VR mode
+      const scene = document.querySelector('a-scene');
+      const sky = document.querySelector('#vr-sky');
+
+      scene.addEventListener('enter-vr', () => {
+        if (!scene.is('ar-mode')) {
+          // Show the sky only in VR mode
+          sky.setAttribute('visible', true);
+        }
+      });
+
+      scene.addEventListener('exit-vr', () => {
+        // Hide the sky when exiting VR mode
+        sky.setAttribute('visible', false);
+      });
+    </script>
+    
   </body>
 </html>
