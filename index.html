@@ -2,74 +2,81 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <title>AR and VR with Shadows</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adapted A-Frame Scene with AR.js</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <!-- AR.js Scene -->
+  <body>
     <a-scene
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false;">
+      renderer="colorManagement: true; shadowMapEnabled: true;"
+      xrweb="optionalFeatures: hit-test, local-floor;">
       
-      <!-- Plane (Ground) -->
-      <a-plane
-        position="0 0 0"
-        rotation="-90 0 0"
-        width="10"
-        height="10"
-        color="#AF51B5">
-      </a-plane>
+      <!-- Lighting -->
+      <!-- Ambient light for basic illumination -->
+      <a-light type="ambient" intensity="0.5"></a-light>
 
-      <!-- Chair Model -->
-      <a-entity 
-        gltf-model="./gltf/gltf/chair.gltf"
-        position="0 0 2"
-        scale="0.02 0.02 0.02"
-        rotation="0 0 0">
-      </a-entity>
+      <!-- Directional light for casting shadows -->
+      <a-light
+        type="directional"
+        position="2 5 -2"
+        intensity="1"
+        castShadow="true"
+        shadow-mapWidth="1024"
+        shadow-mapHeight="1024"
+        shadow-camera-near="0.5"
+        shadow-camera-far="50">
+      </a-light>
 
-      <!-- Cube -->
+      <!-- Objects -->
       <a-box
-        id="cubrick"
-        position="0 0.5 0"
-        depth="1"
-        height="1"
-        width="1">
+        position="-1 0.5 0"
+        rotation="0 45 0"
+        material="src: ./textures/brick_mat.jpg"
+        shadow="cast: true; receive: true">
       </a-box>
 
-      <!-- Sphere -->
-      <a-sphere position="1.5 1 0" radius="0.5" color="#FF5722"></a-sphere>
+      <a-sphere
+        position="0 1.25 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow="cast: true; receive: true">
+      </a-sphere>
 
-      <!-- Torus -->
-      <a-torus position="-1.5 1 0" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
+      <a-cylinder
+        position="2 0.75 -2"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow="cast: true; receive: true">
+      </a-cylinder>
 
-      <!-- Sky: Remove this because AR.js uses the camera feed -->
-      <!-- Camera -->
-      <a-camera position="0 1.6 0">
-        <a-cursor color="yellow"></a-cursor>
-      </a-camera>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="14"
+        height="14"
+        color="#7BC8A4"
+        shadow="receive: true">
+      </a-plane>
+
+      <a-torus
+        position="3 1 -5"
+        radius="0.5"
+        radius-tubular="0.1"
+        color="#3F51B5"
+        shadow="cast: true; receive: true">
+      </a-torus>
+
+      <a-entity
+        gltf-model="./gltf/gltf/chair.gltf"
+        position="-3 0 -5"
+        scale="0.02 0.02 0.02"
+        shadow="cast: true; receive: true">
+      </a-entity>
+
+      <!-- Sky -->
+      <a-sky color="skyblue" hide-on-enter-ar></a-sky>
+
     </a-scene>
-
-    <script>
-      // Load the texture for the box
-      const texture = new THREE.TextureLoader().load('textures/brick_mat.jpg');
-
-      // Adjust texture properties
-      texture.anisotropy = 16;
-      texture.minFilter = THREE.NearestFilter;
-      texture.magFilter = THREE.NearestFilter;
-
-      // Create a material with the texture
-      const material_tex = new THREE.MeshBasicMaterial({ map: texture });
-
-      // Apply the texture material to the box
-      const box = document.querySelector('#cubrick');
-      const mesh = box.getObject3D('mesh');
-      mesh.material = material_tex;
-    </script>
   </body>
 </html>
-
-
