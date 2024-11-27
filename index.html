@@ -3,29 +3,34 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adapted A-Frame Scene with Teleport</title>
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/fernandojsg/aframe-teleport-controls@3.3.2/dist/aframe-teleport-controls.min.js"></script>
+    <title>Adapted A-Frame Scene with AR.js</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
   </head>
-  <body>
-    <a-scene>
+  <body style="margin: 0; overflow: hidden;">
+    <!-- AR.js Scene -->
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false;">
+      
       <!-- Plane (Ground) -->
-      <a-entity
-        geometry="primitive: plane; height: 10; width: 10"
+      <a-plane
+        position="0 0 0"
         rotation="-90 0 0"
-        material="side: double; color: #AF51B5">
-      </a-entity>
+        width="10"
+        height="10"
+        color="#AF51B5">
+      </a-plane>
 
-
-      <!-- Chair. Source: https://www.turbosquid.com/3d-models/old-chair-lowpoly-pbr-3d-2220114-->
+      <!-- Chair Model -->
       <a-entity 
-      gltf-model="./gltf/gltf/chair.gltf"
-      position="0 0 2"
-      scale=".02 .02 .02"
-      rotation="0 0 0">
+        gltf-model="./gltf/gltf/chair.gltf"
+        position="0 0 2"
+        scale="0.02 0.02 0.02"
+        rotation="0 0 0">
       </a-entity>
 
-      <!-- Cube (Textured) -->
+      <!-- Cube -->
       <a-box
         id="cubrick"
         position="0 0.5 0"
@@ -40,34 +45,14 @@
       <!-- Torus -->
       <a-torus position="-1.5 1 0" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
 
-      <!-- Duck Model -->
-      <a-entity
-        gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
-        position="0 0 -2"
-        scale="1 1 1"
-        shadow="cast: true">
-      </a-entity>
-
-      <!-- Sky -->
-      <a-sky id="sky" color="#87CEEB" visible="false"></a-sky>
-
-      <!-- Camera Rig -->
-      <a-entity id="cameraRig" position="0 1.6 4">
-        <a-camera>
-          <a-cursor color="yellow"></a-cursor>
-        </a-camera>
-
-        <!-- Teleport Controls -->
-        <a-entity
-          teleport-controls="cameraRig: #cameraRig; teleportOrigin: #camera;"
-          raycaster="objects: .clickable"
-          line="color: yellow; opacity: 0.75"
-          cursor="rayOrigin: mouse">
-        </a-entity>
-      </a-entity>
+      <!-- Sky: Remove this because AR.js uses the camera feed -->
+      <!-- Camera -->
+      <a-camera position="0 1.6 0">
+        <a-cursor color="yellow"></a-cursor>
+      </a-camera>
     </a-scene>
 
-    <script type="text/javascript">
+    <script>
       // Load the texture for the box
       const texture = new THREE.TextureLoader().load('textures/brick_mat.jpg');
 
@@ -83,18 +68,8 @@
       const box = document.querySelector('#cubrick');
       const mesh = box.getObject3D('mesh');
       mesh.material = material_tex;
-
-      // Show sky only in VR mode
-      const sceneEl = document.querySelector('a-scene');
-      const skyEl = document.querySelector('#sky');
-
-      sceneEl.addEventListener('enter-vr', () => {
-        skyEl.setAttribute('visible', true);
-      });
-
-      sceneEl.addEventListener('exit-vr', () => {
-        skyEl.setAttribute('visible', false);
-      });
     </script>
   </body>
 </html>
+
+
