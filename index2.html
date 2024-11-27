@@ -1,48 +1,65 @@
 <html>
   <head>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe/examples/showcase/modelviewer/model-viewer.min.js"></script>
   </head>
   <body>
-    <!-- Buttons -->
-    <div id="ui-container">
-      <button id="ar-button">AR Mode</button>
-      <button id="vr-button">VR Mode</button>
-    </div>
+    <a-scene xr-mode-ui="enabled: false">
 
-    <!-- A-Frame Scene -->
-    <a-scene
-      vr-mode-ui="enabled: false"
-      xrweb="optionalFeatures: local-floor; mode: ar-and-vr"
-      background="color: #ECECEC">
+      <a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
 
-      <a-box position="0 0.5 0" material="src: ./textures/brick_mat.jpg"></a-box>
-      <a-sphere position="1.5 1 0" radius="0.5" color="#EF2D5E"></a-sphere>
-      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-torus position="3 1 -5" radius="0.5" radius-tubular="0.1" color="#3F51B5"></a-torus>
-      <a-plane id="ground" position="0 0 -4" rotation="-90 0 0" width="14" height="14" color="#7BC8A4" visible="true"></a-plane>
-      <a-entity gltf-model="./gltf/gltf/chair.gltf" position="-3 0 -5" scale="0.02 0.02 0.02"></a-entity>
-      <a-sky color="#ECECEC" visible="false"></a-sky>
+      <a-box
+        position="-1 0.5 0"
+        rotation="0 45 0"
+        material="src: ./textures/brick_mat.jpg"
+        shadow="cast: true; receive: true">
+      </a-box>
+
+
+      <a-sphere
+        position="0 1.25 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow="cast: true; receive: true">
+      </a-sphere>
+
+
+      <a-cylinder
+        position="2 0.75 -2"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow="cast: true; receive: true">
+      </a-cylinder>
+
+
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="14"
+        height="14"
+        color="#7BC8A4"
+        shadow="receive: true">
+      </a-plane>
+
+
+      <a-torus
+        position="3 1 -5"
+        radius="0.5"
+        radius-tubular="0.1"
+        color="#3F51B5"
+        shadow="cast: true; receive: true">
+      </a-torus>
+
+
+      <a-entity
+        gltf-model="./gltf/gltf/chair.gltf"
+        position="-3 0 -5"
+        scale="0.02 0.02 0.02"
+        shadow="cast: true; receive: true">
+      </a-entity>
+
+
+      <a-sky hide-on-enter-ar color="skyblue"></a-sky>
     </a-scene>
-
-    <script>
-      const arButton = document.getElementById('ar-button');
-      const vrButton = document.getElementById('vr-button');
-      const scene = document.querySelector('a-scene');
-      const ground = document.getElementById('ground');
-      const sky = document.querySelector('a-sky');
-
-      arButton.addEventListener('click', () => {
-        scene.setAttribute('xrweb', 'mode: ar-only');
-        ground.setAttribute('visible', false);
-        sky.setAttribute('visible', false);
-      });
-
-      vrButton.addEventListener('click', () => {
-        scene.setAttribute('xrweb', 'mode: vr-only');
-        ground.setAttribute('visible', true);
-        sky.setAttribute('visible', true);
-      });
-    </script>
   </body>
 </html>

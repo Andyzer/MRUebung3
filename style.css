@@ -1,0 +1,33 @@
+/* Remove margins and ensure the body uses the full screen */
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* UI container for buttons */
+  #ui-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Ensures buttons are on top of the scene */
+  }
+  
+  /* Button styling */
+  button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #45a049;
+  }
+  
