@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>AR and VR with Shadows</title>
+    <title>AR and VR beispiel mit stuhl, ente und texture</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   </head>
@@ -36,6 +36,15 @@
         shadow="cast: true; receive: true">
       </a-cylinder>
 
+      <!-- Duck Model -->
+      <a-entity
+        gltf-model="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Duck/glTF/Duck.gltf"
+        position="-2 0 -2"
+        rotation="0 -90 0"
+        scale="1 1 1"
+        shadow="cast: true">
+      </a-entity>
+
       <a-plane
         position="0 0 -4"
         rotation="-90 0 0"
@@ -45,6 +54,7 @@
         shadow="receive: true">
       </a-plane>
 
+      <!--  Source: https://www.turbosquid.com/3d-models/old-chair-lowpoly-pbr-3d-2220114 -->
       <a-entity
         gltf-model="./gltf/gltf/chair.gltf"
         position="-2 0 -5"
@@ -57,19 +67,19 @@
     </a-scene>
 
     <script>
-      // Control sky visibility based on AR or VR mode
+
       const scene = document.querySelector('a-scene');
       const sky = document.querySelector('#vr-sky');
 
       scene.addEventListener('enter-vr', () => {
         if (!scene.is('ar-mode')) {
-          // Show the sky only in VR mode
+
           sky.setAttribute('visible', true);
         }
       });
 
       scene.addEventListener('exit-vr', () => {
-        // Hide the sky when exiting VR mode
+
         sky.setAttribute('visible', false);
       });
     </script>
